@@ -1,16 +1,24 @@
-import { loadUser } from '../user';
-import { httpGet } from '../http';
+import Hero from '../user'
 
-jest.mock('../http');
 
-beforeEach(() => {
-  jest.resetAllMocks();
-});
+test('testing without user settings', () => {
+    const hero = new Hero()
+    const result = new Map([['theme', 'dark'], ['music', 'trance'], ['difficulty', 'easy']])
+    expect(hero.settings).toEqual(result)
+})  
 
-test('should call loadUser once', () => {
-  httpGet.mockReturnValue(JSON.stringify({}));
+test('testing with user settings', () => {
+    const hero = new Hero()
+    hero.setUserSettings('theme', 'gray')
+    hero.setUserSettings('music', 'pop')
+    hero.setUserSettings('difficulty', 'nightmare')
+    const result = new Map([['theme', 'gray'], ['music', 'pop'], ['difficulty', 'nightmare']])
+    expect(hero.settings).toEqual(result)
+})  
 
-  const response = loadUser(1);
-  expect(response).toEqual({});
-  expect(httpGet).toHaveBeenCalledWith('http://server:8080/users/1');
-});
+test('testing with new user settings', () => {
+    const hero = new Hero()
+    hero.setUserSettings('language', 'idish')
+    const result = new Map([['theme', 'dark'], ['music', 'trance'], ['difficulty', 'easy'], ['language', 'idish']])
+    expect(hero.settings).toEqual(result)
+})  

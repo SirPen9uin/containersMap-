@@ -1,11 +1,18 @@
-import { httpGet } from './http';
+export default class Hero {
+    constructor() {
+        this.defaultSetting = new Map([['theme', 'dark'], ['music', 'trance'], ['difficulty', 'easy']]);
+        this.userSetting = new Map();
+    }
 
-export function loadUser(id) {
-  const data = httpGet(`http://server:8080/users/${id}`);
-  return JSON.parse(data);
-}
+    get settings() {
+        const defaultt = new Map(this.defaultSetting);
+        this.userSetting.forEach((element, key) => {
+            defaultt.set(key, element);
+        })
+        return defaultt;
+    }
 
-// eslint-disable-next-line no-unused-vars
-export function saveUser(user) {
-  throw new Error('Unimplemented');
+    setUserSettings(...arr) {
+        this.userSetting.set(...arr)
+    }
 }
